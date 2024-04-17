@@ -53,7 +53,13 @@ server.put('/contacts/:id',async (req, res) => {
 
 server.delete('/contacts/:id',async (req, res) => {
   const {id} = req.params
-  await db.deleteContact(id)
+  const isIdValid = (await sql`SELECT name FROM Contacts WHERE id=${id}`).count
+
+  if (!isIdValid) {
+    throw new Error('Id informado inválido.')
+  }else {
+    await db.deleteContact(id)
+  }
   res.status(204).send()
 })
 
