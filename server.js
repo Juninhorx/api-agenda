@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { fastify } from 'fastify'
 import { DatabasePostgres } from './database-postgres.js'
+import { sql } from './db.js'
 
 const server = fastify()
 
@@ -8,15 +9,25 @@ const db = new DatabasePostgres()
 
 server.post('/contacts', async (req, res) => {
   const {name, email, phone} = req.body
-  const contactId = randomUUID()
-   const contact = {
-    contactId,
-    name,
-    email,
-    phone,
-  }
+  const contactExists = (await sql`SELECT * FROM Contacts
+  WHERE name ILIKE ${name} OR email ILIKE ${email} OR phone ILIKE ${phone};`).count
 
-  await db.createContact(contact)
+  if (contactExists) {
+    //ERRO
+    throw new Error('Já existe um contato com algum dos dados informados.')
+  } else {
+    //Cria Contato
+
+    const contactId = randomUUID()
+    const contact = {
+      contactId,
+      name,
+      email,
+      phone,
+    }
+    
+    await db.createContact(contact)
+  }
   res.status(201).send()
 }) 
 
