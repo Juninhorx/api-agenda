@@ -39,4 +39,7 @@ server.delete('/contacts/:id',async (req, res) => {
   res.status(204).send()
 })
 
-server.listen({port: 3333}).then(console.log('Server on'))
+server.listen({
+  host: '0.0.0.0',
+  port: 3333
+}).then(console.log('Server on'))
