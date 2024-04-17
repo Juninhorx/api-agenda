@@ -40,7 +40,14 @@ server.get('/contacts', async (req, res) => {
 server.put('/contacts/:id',async (req, res) => {
   const {id} = req.params
   const newContactData = req.body
-  await db.updateContact(id, newContactData)
+  const isIdValid = (await sql`SELECT name FROM Contacts WHERE id=${id}`).count
+
+  if (!isIdValid) {
+    throw new Error('Id informado inválido.')
+  }else {
+    await db.updateContact(id, newContactData)
+  }
+
   res.status(201).send()
 })
 
