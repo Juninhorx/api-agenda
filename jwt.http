@@ -1,0 +1,15 @@
+POST http://localhost:3333/login
+Content-Type: application/json
+
+{
+  "email": "zuck@gmail.com",
+  "password": "123456"
+}
+
+###
+
+GET http://localhost:3333/contacts
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inp1Y2tAZ21haWwuY29tIiwiaWF0IjoxNzEzODc3NDU0LCJleHAiOjE3MTM4Nzc3NTR9.6ctSab6NjsH6pHRPQGTABE2-9V2FS0nddh8ScSD5WpI
+
+###
